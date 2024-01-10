@@ -330,7 +330,7 @@ def get_pytorchjob_template(
         constants.REPLICA_TYPE_MASTER
     ] = models.KubeflowOrgV1ReplicaSpec(
         replicas=1,
-        template=num_worker_replicas,
+        template=worker_pod_template_spec,
     )
 
     if num_worker_replicas and num_worker_replicas > 1:
