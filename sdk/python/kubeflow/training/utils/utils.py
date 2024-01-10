@@ -326,19 +326,18 @@ def get_pytorchjob_template(
     if elastic_policy:
         pytorchjob.spec.elastic_policy = elastic_policy
 
-    if master_pod_template_spec:
-        pytorchjob.spec.pytorch_replica_specs[
-            constants.REPLICA_TYPE_MASTER
-        ] = models.KubeflowOrgV1ReplicaSpec(
-            replicas=1,
-            template=master_pod_template_spec,
-        )
+    pytorchjob.spec.pytorch_replica_specs[
+        constants.REPLICA_TYPE_MASTER
+    ] = models.KubeflowOrgV1ReplicaSpec(
+        replicas=1,
+        template=num_worker_replicas,
+    )
 
-    if num_worker_replicas:
+    if num_worker_replicas and num_worker_replicas > 1:
         pytorchjob.spec.pytorch_replica_specs[
             constants.REPLICA_TYPE_WORKER
         ] = models.KubeflowOrgV1ReplicaSpec(
-            replicas=num_worker_replicas,
+            replicas=num_worker_replicas - 1,
             template=worker_pod_template_spec,
         )
 
